@@ -1,25 +1,16 @@
 package br.ufpb.dce.poo.projetopack;
 
 
-public class Professor extends Usuario{
+public class Aluno extends Usuario {
 	
-	private String departamento;
-
-	public Professor(String nome, String matricula, String cpf, String departamento){
+	public Aluno(String nome, String matricula, String cpf, String curso, String periodoIngresso){
 		super(nome, matricula, cpf);
-		this.departamento = departamento;
+		super.setPeriodoIngresso(periodoIngresso);
+		super.setCurso(curso);
 	}
 
 	public int getQuantDiasEmprestimo() {
-		return Configuracao.getInstance().getDiasEmprestimoProfessor();
-	}
-	
-	public String getDepartamento(){
-		return this.departamento;
-	}
-	
-	public void setDepartamento(String departamento){
-		this.departamento = departamento;
+		return Configuracao.getInstance().getDiasEmprestimoAluno();
 	}
 
 }
