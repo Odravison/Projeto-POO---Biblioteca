@@ -3,13 +3,12 @@ package br.ufpb.dce.poo.projetopack;
 public class Configuracao {
 	private static Configuracao singleton;
 	
-	private double valorMulta;
-	private final int diasEmprestimoProf = 30;
-	private final int diasEmprestimoAluno = 10;
+	private double valorMulta = 0;
+	private int diasEmprestimoProf = 0;
+	private int diasEmprestimoAluno = 0;
 	
 	private Configuracao (){
-		this.valorMulta = 0.5;
-
+		
 	}
 		
 	public static Configuracao getInstance(){
@@ -17,6 +16,18 @@ public class Configuracao {
 			Configuracao.singleton = new Configuracao();
 		}
 		return Configuracao.singleton;
+	}
+	
+	public int getDiasEmprestimoProf() {
+		return diasEmprestimoProf;
+	}
+
+	public void setDiasEmprestimoProf(int diasEmprestimoProf) {
+		this.diasEmprestimoProf = diasEmprestimoProf;
+	}
+
+	public void setDiasEmprestimoAluno(int diasEmprestimoAluno) {
+		this.diasEmprestimoAluno = diasEmprestimoAluno;
 	}
 	
 	public int getDiasEmprestimoProfessor(){
