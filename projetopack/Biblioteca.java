@@ -35,7 +35,7 @@ public class Biblioteca {
 	public void cadastrarUsuario (Usuario u) throws UsuarioJaExisteException{
 		for (Usuario usuario: this.usuarios){
 			if (usuario.getMatricula().equals(u.getMatricula())){
-				throw new UsuarioJaExisteException ("Este usu·rio j· existe.");
+				throw new UsuarioJaExisteException ("Este usu√°rio j√° existe.");
 			}
 		}
 		this.usuarios.add(u);
@@ -58,7 +58,7 @@ public class Biblioteca {
 				return u;
 			}
 		}
-		throw new UsuarioInexistenteException ("Este usuario n√£o existe.");
+		throw new UsuarioInexistenteException ("Este usuario n√É¬£o existe.");
 	}
 	
 	public Livro getLivro (String codLivro) throws LivroInexistenteException{
@@ -117,7 +117,7 @@ public class Biblioteca {
 		}
 		for (Emprestimo e: this.listarEmprestimosEmAtraso()){
 			if (e.getUsuario().getMatricula().equals(usuario.getMatricula())){
-				throw new UsuarioEmAtrasoException ("Usu·rio est· em dÈbito com a biblioteca");
+				throw new UsuarioEmAtrasoException ("Usu√°rio est√° em d√©bito com a biblioteca");
 			}
 		}
 		for (Livro l: this.livros){
@@ -175,7 +175,7 @@ public class Biblioteca {
 			gravadorAluno = new BufferedWriter(new FileWriter(nomeArquivoAluno));
 			gravadorProfessor = new BufferedWriter(new FileWriter(nomeArquivoProfessor));
 			for (Usuario usuario: this.usuarios){
-				if(usuario.getQuantDiasEmprestimo() == 10){
+				if(usuario.getQuantDiasEmprestimo() == configuracao.getDiasEmprestimoAluno()){
 					gravadorAluno.write(usuario.getNome());
 					gravadorAluno.newLine();
 					gravadorAluno.write(usuario.getMatricula());
@@ -339,6 +339,53 @@ public class Biblioteca {
 		}		
 	}
 	
+	public void gravarConfiguracoesEmArquivo(String nomeArquivoConfiguracao) throws IOException{
+		BufferedWriter gravador = null;
+		try {
+			gravador = new BufferedWriter(new FileWriter(nomeArquivoConfiguracao));
+			
+			gravador.write(Integer.toString(configuracao.getDiasEmprestimoAluno()));
+			gravador.write(Integer.toString(configuracao.getDiasEmprestimoProfessor()));
+			gravador.write(Double.toString(configuracao.getValorMulta()));
+			
+		
+		} finally {
+			if (gravador!=null){
+				gravador.close();
+			}
+		}
+	}
+	
+	public void carregarConfiguracoesDeArquivo (String nomeArquivoConfiguracao) throws IOException{
+		BufferedReader leitor = null;
+		
+		try {
+			leitor = new BufferedReader(new FileReader(nomeArquivoConfiguracao));
+			String diasEmprestimoAluno = null;
+			
+			do {
+				diasEmprestimoAluno = leitor.readLine();
+				if (diasEmprestimoAluno != null){
+					String diasEmprestimoProfessor = leitor.readLine();
+					String valorMulta = leitor.readLine();
+					
+					this.configuracao.setDiasEmprestimoAluno(Integer.parseInt(diasEmprestimoAluno));
+					this.configuracao.setDiasEmprestimoProf(Integer.parseInt(diasEmprestimoProfessor));
+					System.out.println(Double.parseDouble(valorMulta));
+					this.configuracao.setValorMulta(Double.parseDouble(valorMulta));
+				}
+				
+				
+			} 
+			while(diasEmprestimoAluno != null); 
+		} 
+		finally {
+			if (leitor!=null){
+				leitor.close();
+			}
+		}
+	}
+	
 	public void carregarEmprestimosDeArquivo(String nomeArquivo) throws IOException, EmprestimoJaExisteException, UsuarioInexistenteException, LivroInexistenteException{
 		BufferedReader leitor = null;
 		try {
@@ -399,9 +446,12 @@ public class Biblioteca {
 
 public static void main(String[] args) throws IOException, UsuarioJaExisteException, EmprestimoJaExisteException, UsuarioInexistenteException, LivroInexistenteException, EmprestimoInexistenteException, MaximoDeLivrosEmprestadosException, UsuarioEmAtrasoException, QuantidadeDeLivrosInsuficienteException {
 	Biblioteca biblioteca = Biblioteca.getInstance();
+	biblioteca.configuracao.setDiasEmprestimoAluno(40);
+	biblioteca.configuracao.setDiasEmprestimoProf(20);
+	biblioteca.configuracao.setValorMulta(0.5);
 	
 	biblioteca.cadastrarLivro(new Livro ("Java", "2345", "Martin", 10, "Programacao"));
-	biblioteca.cadastrarUsuario(new Aluno ("Odravison", "12345", "12345678901", "Sistema de informaÁ„o", "2013.1"));
+	biblioteca.cadastrarUsuario(new Aluno ("Odravison", "12345", "12345678901", "Sistema de informa√ß√£o", "2013.1"));
 	biblioteca.cadastrarUsuario(new Professor ("Ayla", "1234","12345678901","DCE" ));
 	biblioteca.emprestarLivro(biblioteca.getUsuario("12345"), biblioteca.getLivro("2345"));
 	biblioteca.emprestarLivro(biblioteca.getUsuario("1234"), biblioteca.getLivro("2345"));
@@ -410,11 +460,13 @@ public static void main(String[] args) throws IOException, UsuarioJaExisteExcept
 	biblioteca.gravarEmprestimosEmArquivo("Emprestimos.txt");
 	biblioteca.gravarLivrosEmArquivo("Livros.txt");
 	biblioteca.gravarUsuariosEmAquivo("Alunos.txt", "Professores.txt");
+	biblioteca.gravarConfiguracoesEmArquivo("Configuracao.txt");
 	
 //	biblioteca.carregarLivrosDeArquivo("Livros.txt");
 //	biblioteca.carregarProfessoresDeArquivo("Professores.txt");
 //	biblioteca.carregarAlunosDeArquivo("Alunos.txt");
 //	biblioteca.carregarEmprestimosDeArquivo("Emprestimos.txt");
+//	biblioteca.carregarConfiguracoesDeArquivo("Configuracao.txt");
 	
 	System.out.println(biblioteca.getLivro("2345").getNome());
 	System.out.println(biblioteca.getLivro("2345").getAutor());
@@ -431,9 +483,9 @@ public static void main(String[] args) throws IOException, UsuarioJaExisteExcept
 	System.out.println(biblioteca.getUsuario("1234").getCPF());
 	System.out.println(biblioteca.getUsuario("1234").getMatricula());
 	
-	for (Usuario u: biblioteca.usuarios){
+	for (Usuario u1: biblioteca.usuarios){
 		
-		for(Emprestimo e: u.getEmprestimos()){
+		for(Emprestimo e: u1.getEmprestimos()){
 			System.out.println(e.getDataEmprestimo().getTime());
 			System.out.println(e.getDataDevolucao().getTime());
 		}
@@ -443,7 +495,6 @@ public static void main(String[] args) throws IOException, UsuarioJaExisteExcept
 	biblioteca.devolverLivro(biblioteca.getUsuario("12345"),biblioteca.getLivro("2345"));
 	System.out.println(biblioteca.getLivro("2345").getQuantidade());
 	biblioteca.devolverLivro(biblioteca.getUsuario("1234"),biblioteca.getLivro("2345"));
-	
 	System.out.println(biblioteca.getLivro("2345").getQuantidade());
 	
 }
