@@ -6,6 +6,7 @@ public class Configuracao {
 	private double valorMulta = 0;
 	private int diasEmprestimoProf = 0;
 	private int diasEmprestimoAluno = 0;
+	// private String caminhoArquivoEmprestimo = 
 	
 	private Configuracao (){
 		
