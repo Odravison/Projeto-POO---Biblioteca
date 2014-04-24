@@ -1,9 +1,5 @@
 package br.ufpb.dce.poo.projetopack;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +26,28 @@ public class Biblioteca {
 			singleton = new Biblioteca();
 		}
 		return singleton;
+	}
+	
+	public void gravarSistema () throws IOException{
+		Persistencia persistencia = Persistencia.getInstance();
+		
+		persistencia.gravarConfiguracoesEmArquivo("Configuracoes.txt");
+		persistencia.gravarEmprestimosEmArquivo("Emprestimos.txt");
+		persistencia.gravarUsuariosEmArquivo("Usuarios.txt");
+		persistencia.gravarLivrosEmArquivo("Livros.txt");
+
+		
+	}
+	
+	public void carregarSistema() throws IOException, EmprestimoJaExisteException, UsuarioInexistenteException, LivroInexistenteException{
+		Persistencia persistencia = Persistencia.getInstance();
+		
+		persistencia.carregarConfiguracoesDeArquivo("Configuracoes.txt");
+		persistencia.carregarLivrosDeArquivo("Livros.txt");
+		persistencia.carregarUsuariosDeArquivo("Usuarios.txt");
+		persistencia.carregarEmprestimosDeArquivo("Emprestimos.txt");
+			
+	
 	}
 	
 	public void cadastrarUsuario (Usuario u) throws UsuarioJaExisteException{
@@ -186,10 +204,10 @@ public class Biblioteca {
 	biblioteca.emprestarLivro(biblioteca.getUsuario("1234"), biblioteca.getLivro("2345"));
 	
 	
-	biblioteca.gravarEmprestimosEmArquivo("Emprestimos.txt");
-	biblioteca.gravarLivrosEmArquivo("Livros.txt");
-	biblioteca.gravarUsuariosEmAquivo("Alunos.txt", "Professores.txt");
-	biblioteca.gravarConfiguracoesEmArquivo("Configuracao.txt");
+//	biblioteca.gravarEmprestimosEmArquivo("Emprestimos.txt");
+//	biblioteca.gravarLivrosEmArquivo("Livros.txt");
+//	biblioteca.gravarUsuariosEmAquivo("Alunos.txt", "Professores.txt");
+//	biblioteca.gravarConfiguracoesEmArquivo("Configuracao.txt");
 	
 //	biblioteca.carregarLivrosDeArquivo("Livros.txt");
 //	biblioteca.carregarProfessoresDeArquivo("Professores.txt");
@@ -197,34 +215,34 @@ public class Biblioteca {
 //	biblioteca.carregarEmprestimosDeArquivo("Emprestimos.txt");
 //	biblioteca.carregarConfiguracoesDeArquivo("Configuracao.txt");
 	
-	System.out.println(biblioteca.getLivro("2345").getNome());
-	System.out.println(biblioteca.getLivro("2345").getAutor());
-	System.out.println(biblioteca.getLivro("2345").getClassificacao());
-	System.out.println("Quantidade do livro: " + biblioteca.getLivro("2345").getQuantidade());
-	
-	System.out.println(biblioteca.getUsuario("12345").getNome());
-	System.out.println(biblioteca.getUsuario("12345").getCPF());
-	System.out.println(biblioteca.getUsuario("12345").getMatricula());
-	System.out.println(biblioteca.getUsuario("12345").getCurso());
-	
-	System.out.println(biblioteca.getUsuario("1234").getNome());
-	System.out.println(biblioteca.getUsuario("1234").getDepartamento());
-	System.out.println(biblioteca.getUsuario("1234").getCPF());
-	System.out.println(biblioteca.getUsuario("1234").getMatricula());
-	
-	for (Usuario u1: biblioteca.usuarios){
-		
-		for(Emprestimo e: u1.getEmprestimos()){
-			System.out.println(e.getDataEmprestimo().getTime());
-			System.out.println(e.getDataDevolucao().getTime());
-		}
-	}
-	
-	System.out.println(biblioteca.getLivro("2345").getQuantidade());
-	biblioteca.devolverLivro(biblioteca.getUsuario("12345"),biblioteca.getLivro("2345"));
-	System.out.println(biblioteca.getLivro("2345").getQuantidade());
-	biblioteca.devolverLivro(biblioteca.getUsuario("1234"),biblioteca.getLivro("2345"));
-	System.out.println(biblioteca.getLivro("2345").getQuantidade());
+//	System.out.println(biblioteca.getLivro("2345").getNome());
+//	System.out.println(biblioteca.getLivro("2345").getAutor());
+//	System.out.println(biblioteca.getLivro("2345").getClassificacao());
+//	System.out.println("Quantidade do livro: " + biblioteca.getLivro("2345").getQuantidade());
+//	
+//	System.out.println(biblioteca.getUsuario("12345").getNome());
+//	System.out.println(biblioteca.getUsuario("12345").getCPF());
+//	System.out.println(biblioteca.getUsuario("12345").getMatricula());
+//	System.out.println(biblioteca.getUsuario("12345").getCurso());
+//	
+//	System.out.println(biblioteca.getUsuario("1234").getNome());
+//	System.out.println(biblioteca.getUsuario("1234").getDepartamento());
+//	System.out.println(biblioteca.getUsuario("1234").getCPF());
+//	System.out.println(biblioteca.getUsuario("1234").getMatricula());
+//	
+//	for (Usuario u1: biblioteca.usuarios){
+//		
+//		for(Emprestimo e: u1.getEmprestimos()){
+//			System.out.println(e.getDataEmprestimo().getTime());
+//			System.out.println(e.getDataDevolucao().getTime());
+//		}
+//	}
+//	
+//	System.out.println(biblioteca.getLivro("2345").getQuantidade());
+//	biblioteca.devolverLivro(biblioteca.getUsuario("12345"),biblioteca.getLivro("2345"));
+//	System.out.println(biblioteca.getLivro("2345").getQuantidade());
+//	biblioteca.devolverLivro(biblioteca.getUsuario("1234"),biblioteca.getLivro("2345"));
+//	System.out.println(biblioteca.getLivro("2345").getQuantidade());
 	
 }
 
