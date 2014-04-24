@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import br.ufpb.dce.poo.ExceptionsProject.UsuarioJaExisteException;
 
-public class Aluno extends Usuario implements UsuarioPersistencia {
+public class Aluno extends Usuario {
 	
 	private String periodoIngresso;
 	private String curso;
