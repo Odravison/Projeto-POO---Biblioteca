@@ -1,7 +1,11 @@
 package br.ufpb.dce.poo.projetopack;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+import br.ufpb.dce.poo.ExceptionsProject.UsuarioJaExisteException;
 
 public abstract class Usuario{
 	private List<Emprestimo> emprestimos;
@@ -44,7 +48,13 @@ public abstract class Usuario{
 	public List<Emprestimo> getEmprestimos(){
 		return this.emprestimos;
 	}
+	
+	// Professor e Aluno
 
-	public abstract int getQuantDiasEmprestimo(); // Professor e Aluno
+	public abstract int getQuantDiasEmprestimo(); 
+	
+	public abstract void gravarUsuariosEmArquivo(String nomeArquivo) throws IOException;
+	
+	public abstract void carregarUsuariosDeArquivo(String nomeArquivo) throws FileNotFoundException, IOException, UsuarioJaExisteException;
 
 }
